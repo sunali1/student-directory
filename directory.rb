@@ -4,7 +4,7 @@ def input_students
   puts "To finish hit return twice"
   students = []
   name = gets.chomp
-  while !name.empty? do
+  while !name.empty? do # note if ! is missing the input never ends
     students << {name: name, cohort: :november}
     puts "Now we have #{students.count} students."
   name = gets.chomp
@@ -18,8 +18,9 @@ def print_header
 end
 
 def print(students)
-students.each do |student|
-  puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  students.each_with_index do |student, index|
+  ni = index.to_i + 1
+  puts "#{ni}. #{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
