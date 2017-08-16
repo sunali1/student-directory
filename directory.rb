@@ -1,10 +1,13 @@
 #lets put all students into an array
 def input_students
-  puts "Please enter the names of students, country of birth and age"
+  puts "Please enter the names of students, cohort, country of birth and age"
   puts "To finish hit return twice"
   students = []
   name = gets.chomp
   while !name.empty? do # note if ! is missing the input never ends
+  puts "cohort?"
+  cohort = gets.chomp.to_sym
+  cohort = 'November'.to_sym if cohort.empty?
   puts "country of birth?"
   country_of_birth = gets.chomp
   puts "age?"
