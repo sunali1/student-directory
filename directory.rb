@@ -1,69 +1,74 @@
+@students = []
 def interactive_menu
-  students = []
-  loop do
+loop do
+  print_menu
+  process(gets.chomp)
+end
+end
+
+  def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
+    puts "3. Save the list to stdents.csv"
     puts "9. Exit"
-    selection = gets.chomp
- case selection
-  when "1"
-    students = input_students
-  when "2"
-    print_header
-    print(students)
-    print_footer(students)
-  when "9"
-    exit # this will cause the program to terminate
-  else
-    puts "I don't know what you meant, try again"
   end
- end
-end
+
+  def show_students
+    print_header
+     print_student_list
+    print_footer
+  end
+
+  def process(selection)
+    case selection
+    when "1"
+    input_students
+    when "2"
+    show_students
+    when "3"
+    save_students
+    when "9"
+    exit # this will cause the program to terminate
+    else
+    puts "I don't know what you meant, try again"
+    end
+  end
+
 #lets put all students into an array
 def input_students
-  puts "Please enter the names of students, cohort, country of birth and age"
+  puts "Please enter the names of students"
   puts "To finish hit return twice"
-  students = []
-  name = gets.chomp
-  while !name.empty? do # note if ! is missing the input never ends
-  puts "cohort?"
-  cohort = gets.chomp.to_sym
-  cohort = "November".to_sym if cohort.empty?#default :november cohort didnt work
-  puts "country of birth?"
-  country_of_birth = gets.chomp
-  puts "age?"
-  age = gets.chomp
-    students << {name: name, cohort: cohort, country_of_birth: country_of_birth, age: age}
-    if students.count == 1
-    puts "Now we have #{students.count} student. Next name?"
-    else
-      puts "Now we have #{students.count} students. Next name?"
+    name = gets.chomp
+    while !name.empty? do
+    @students << {name: name, cohort: :november}
+      puts "Now we have #{@students.count} students. Next name?"
+      name = gets.chomp
     end
-  name = gets.chomp
   end
-  students    # step 8.8 TRY LATER unable to do .group_by{|x| x[:cohort]} cant figure why
-end
 
 def print_header
   puts "The students of Villain Academy"
   puts "--------------------"
 end
 
-def print(students)
-  i = 0
-  while i < students.size && students.size > 0 do
-  ni = i + 1
-  puts "#{ni}. #{students[i][:name].ljust(30)} (#{students[i][:cohort]} cohort) #{students[i][:country_of_birth]} #{students[i][:age]}" if students[i][:name].start_with?("T","t")
-  i += 1
+def print_student_list
+  @students.each do|student|
+    puts "#{student[:name]} #{student[:cohort]} cohort"
   end
 end
 
-def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+def print_footer
+  puts "Overall, we have #{@students.count} great students"
+end
+
+def save_students
+  file = File.open("students.csv", "w")
+  @students.each do |student|
+    student_data = [student[:name]], [student[:cohort]]
+    csv_line = student_data.join(" ")
+    file.puts csv_line
+  end
+  file.close
 end
 
 interactive_menu
-students = input_students
-print_header
-print(students)
-print_footer(students)
